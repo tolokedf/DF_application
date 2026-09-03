@@ -1,0 +1,31 @@
+{
+  "folders": [
+    {
+      "name": "📦 Root Suite",
+      "path": "."
+    },
+    {
+      "name": "🚪 Portal Hub (8080)",
+      "path": "portal"
+    },
+    {
+      "name": "💬 DF Chatbot (5000)",
+      "path": "dfchatbot"
+    },
+    {
+      "name": "📋 Site Readiness (3000)",
+      "path": "site-readiness"
+    },
+    {
+      "name": "🛠️ Preventive Maintenance (8000)",
+      "path": "preventive-maintenance"
+    }
+  ],
+  "settings": {
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.extraPaths": [
+      "${workspaceFolder:💬 DF Chatbot (5000)}/src",
+      "${workspaceFolder:📋 Site Readiness (3000)}"
+    ]
+  }
+}

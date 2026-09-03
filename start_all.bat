@@ -24,6 +24,8 @@ start "Preventive Maintenance (Port 8000)" cmd /k "cd /d %ROOT_DIR%preventive-ma
 echo.
 echo =====================================================================
 echo [INFO] All services launched!
-echo [INFO] Open Portal in browser: http://localhost:8080
+echo [INFO] Local Access:    http://localhost:8080
+echo [INFO] Wi-Fi / Network: Open cmd and run "ipconfig" to find your IPv4 address,
+echo        then devices on the same Wi-Fi can access: http://YOUR_IP:8080
 echo =====================================================================
 pause

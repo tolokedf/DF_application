@@ -56,12 +56,28 @@ fi
 
 cd "$PROJECT_ROOT"
 
+# Detect Local Wi-Fi / LAN IP Address
+LOCAL_IP=$(python3 -c "
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+try:
+    s.connect(('8.8.8.8', 80))
+    ip = s.getsockname()[0]
+except Exception:
+    ip = '127.0.0.1'
+finally:
+    s.close()
+print(ip)
+")
+
 echo "======================================================================"
 echo "✅ All applications running with unified Python stack!"
-echo "📍 Central Portal Hub: http://localhost:8080"
-echo "   - 💬 AI Chatbot (dfchatbot):           http://localhost:5000"
-echo "   - 📋 Site Readiness (Python):          http://localhost:3000"
-echo "   - 🛠️ Preventive Maintenance:          http://localhost:8000"
+echo "📍 Local Access:   http://localhost:8080"
+echo "🌐 Wi-Fi / LAN:    http://${LOCAL_IP}:8080 (Share with devices on same Wi-Fi)"
+echo ""
+echo "   - 💬 AI Chatbot (dfchatbot):           http://${LOCAL_IP}:5000"
+echo "   - 📋 Site Readiness (Python):          http://${LOCAL_IP}:3000"
+echo "   - 🛠️ Preventive Maintenance:          http://${LOCAL_IP}:8000"
 echo ""
 echo "To stop all services: ./stop_all.sh"
 echo "======================================================================"

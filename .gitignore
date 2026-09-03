@@ -7,10 +7,11 @@
 **/.env
 !**/.env.example
 
-# Ignore virtual environments and node modules
+# Ignore virtual environments, data and node modules
 **/.venv/
 **/venv/
 **/node_modules/
 **/__pycache__/
 *.pyc
 **/dist/
+**/data/
