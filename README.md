@@ -8,7 +8,8 @@ A unified multi-application workspace for **DF Automation and Robotics**. Each w
 
 Users only need to open the **Central Portal Hub** to monitor and launch any application in the suite:
 
-📍 **Central Portal Hub**: [http://localhost:8080](http://localhost:8080)
+📍 **Local Portal**: [http://localhost:8080](http://localhost:8080)  
+🌐 **Wi-Fi / LAN Network**: `http://<YOUR_LAN_IP>:8080` *(Accessible from any phone, tablet, or laptop on the same Wi-Fi)*
 
 ---
 
@@ -16,10 +17,10 @@ Users only need to open the **Central Portal Hub** to monitor and launch any app
 
 | Application | Directory / Submodule | Port | Purpose & Workflow | Tech Stack |
 | :--- | :--- | :--- | :--- | :--- |
-| **Central Portal Hub** | `portal/` | `8080` | **Front Gateway**: Central launchpad & live status monitor for all DF web tools. | HTML5, Tailwind CSS, Python |
-| **DF AI Chatbot** | `dfchatbot/` | `5000` | **AI Technical Assistant**: Multimodal RAG chatbot for robotics manuals (NavWiz & DFleet) with visual schematic search. | Python Flask, ChromaDB, Gemini 2.0/3.5 |
-| **Site Readiness App** | `site-readiness/` | `3000` | **AGV Site Assessment**: Evaluates client facilities (flooring, Wi-Fi, ramps, clearance) to verify AGV installation suitability & generates readiness verification reports. | React / Vite, Python Flask, ReportLab |
-| **Preventive Maintenance** | `preventive-maintenance/` | `8000` | **Robot Maintenance**: Periodic AMR health audits, hardware component checklists, and PDF service report generation. | Python Flask, ReportLab, Gemini AI |
+| **Central Portal Hub** | `portal/` | `8080` | **Front Gateway**: Central launchpad & live status monitor for all DF web tools with automatic host IP routing. | HTML5, Tailwind CSS, Python `http.server` |
+| **DF AI Chatbot** | `dfchatbot/` | `5000` | **AI Technical Assistant**: Multimodal RAG assistant for querying technical manuals (NavWiz & DFleet) with visual schematic search. | Python Flask, ChromaDB, Gemini 2.0/3.5, Waitress WSGI |
+| **Site Readiness App** | `site-readiness/` | `3000` | **AGV Site Assessment (FRM-FLD-003)**: Evaluates client facilities across 8 standard sections, supports 1 photo per section, tracks action items & generates official PDF reports. | Python Flask, ReportLab 5.0, Tailwind CSS, Waitress WSGI |
+| **Preventive Maintenance** | `preventive-maintenance/` | `8000` | **Robot Maintenance SOP**: Discovers AGV models from `AGV_type/`, step-by-step SOP checklists, auto-fills forms, and exports PDF/HTML matching official templates. | Python Flask, ReportLab 5.0, Tailwind CSS, Waitress WSGI |
 
 ---
 
@@ -63,7 +64,7 @@ Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## 🛠️ Individual Submodule Management & Git Workflow
 
-Each application is an independent Git submodule connected to its own GitHub repository.
+Each application is an independent Git submodule connected to its own GitHub repository under `https://github.com/tolokedf/`.
 
 ### Initializing / Cloning Repository with Submodules
 ```bash
@@ -77,7 +78,7 @@ git submodule update --init --recursive
 ### Working on an Individual App
 ```bash
 # 1. Navigate to submodule directory
-cd dfchatbot  # or site-readiness / preventive-maintenance / portal
+cd site-readiness  # or dfchatbot / preventive-maintenance / portal
 
 # 2. Activate its dedicated environment
 source .venv/bin/activate
