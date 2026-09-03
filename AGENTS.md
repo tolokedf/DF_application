@@ -32,15 +32,26 @@ The monorepo coordinates 4 independent web applications. Each app has its own en
 
 ## 🛡️ 3. Core Architectural Standards
 
-1. **Data Isolation (`**/data/`)**:
-   - All runtime databases (`.sqlite3`, `db.json`), vector stores, user uploads (`uploads/`), and generated PDFs must reside strictly inside `data/` subdirectories.
-   - All `data/` folders are `.gitignore`d to prevent committing operational data.
+1. **Database & Operational Data Isolation (`Database/`)**:
+   - All runtime databases (`.sqlite3`, `db.json`), ChromaDB vector stores, user uploads (`uploads/`), and generated PDFs reside in the centralized, gitignored `DF_application/Database/` hub.
+   - Applications automatically connect to `Database/`, with graceful fallback to `./data/` if run standalone.
+   - All `Database/`, `**/data/`, `*.sqlite3`, and `*.zip` paths are `.gitignore`d to prevent committing operational or customer data to GitHub.
 
-2. **Network & Host Resolution**:
+2. **1-Click Database Portability (USB Transfer)**:
+   - **Export Database to ZIP:**
+     - Linux / macOS: `./export_database.sh [destination_path]`
+     - Windows: `export_database.bat`
+     *(Compresses the full Database hub into a single timestamped `DF_Database_YYYYMMDD_HHMMSS.zip` for USB transfer).*
+   - **Import Database from ZIP:**
+     - Linux / macOS: `./import_database.sh [path_to_zip]`
+     - Windows: `import_database.bat`
+     *(Takes a safety snapshot and restores the entire database hub on the deployment PC).*
+
+3. **Network & Host Resolution**:
    - Servers bind to `0.0.0.0` for access across the local network / Wi-Fi.
    - Web UIs dynamically use `window.location.hostname` rather than hardcoding `localhost`.
 
-3. **Portal & Design System**:
+4. **Portal & Design System**:
    - Central portal runs on Google Material Design 3 styling.
    - 3-mode theme selector (**Light** / **Dark** / **Device default (System)**) with `localStorage` persistence (`'df_portal_theme'`).
 

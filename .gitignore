@@ -15,3 +15,8 @@
 *.pyc
 **/dist/
 **/data/
+Database/
+*.zip
+DF_Database_*.zip
+*.sqlite3
+*.db
