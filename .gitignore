@@ -1,0 +1,16 @@
+# Root-level ignore rules
+.running_pids
+*.log
+.DS_Store
+
+# Ignore environment files
+**/.env
+!**/.env.example
+
+# Ignore virtual environments and node modules
+**/.venv/
+**/venv/
+**/node_modules/
+**/__pycache__/
+*.pyc
+**/dist/

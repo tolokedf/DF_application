@@ -1,0 +1,12 @@
+[submodule "dfchatbot"]
+	path = dfchatbot
+	url = https://github.com/tolokedf/dfchatbot.git
+[submodule "site-readiness"]
+	path = site-readiness
+	url = https://github.com/tolokedf/site-readiness.git
+[submodule "portal"]
+	path = portal
+	url = https://github.com/tolokedf/portal.git
+[submodule "preventive-maintenance"]
+	path = preventive-maintenance
+	url = https://github.com/tolokedf/preventive-maintenance.git
