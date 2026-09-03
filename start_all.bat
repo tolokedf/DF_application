@@ -19,7 +19,7 @@ start "DF Chatbot (Port 5000)" cmd /k "cd /d %ROOT_DIR%dfchatbot && python scrip
 start "Site Readiness (Port 3000)" cmd /k "cd /d %ROOT_DIR%site-readiness && python scripts\run_server.py"
 
 :: 4. Start Preventive Maintenance (Port 8000)
-start "Preventive Maintenance (Port 8000)" cmd /k "cd /d %ROOT_DIR%preventive-maintenance && python app.py"
+start "Preventive Maintenance (Port 8000)" cmd /k "cd /d %ROOT_DIR%preventive-maintenance && python scripts\run_server.py"
 
 echo.
 echo =====================================================================

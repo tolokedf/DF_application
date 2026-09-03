@@ -4,6 +4,15 @@
 
 ---
 
+## 🚨 MANDATORY INSTRUCTION & SCOPE DIRECTIVE
+> **CRITICAL RULE FOR ALL SESSIONS:**
+> **Do not add additional feature/button/text that did not mention in instruction.**
+> - Strictly implement only what the user has requested.
+> - Do not introduce unrequested UI elements, extra buttons, placeholder text, demo buttons, or modified layouts unless explicitly instructed.
+> - Preserve all existing functionality, layouts, and backend behavior.
+
+---
+
 ## 1. System Overview & Mission
 
 The **DF Application Suite** is a unified multi-application ecosystem built for **DF Automation and Robotics**. It decouples distinct engineering, operational, and customer-facing tools into independent modular applications while providing a centralized access gateway.
@@ -19,9 +28,9 @@ The **DF Application Suite** is a unified multi-application ecosystem built for 
 
 | Application | Git Submodule Directory | Port | Primary Purpose & User Workflow | Tech Stack |
 | :--- | :--- | :--- | :--- | :--- |
-| **Central Portal Hub** | `portal/` | `8080` | **Front Gateway Launchpad:** Central interface for users to select, monitor, and launch any DF robotics web tool. | Python `http.server`, Tailwind CSS, HTML5 |
+| **Central Portal Hub** | `portal/` | `8080` | **Front Gateway Launchpad:** Central Google Material You (M3) styled interface with 3-way theme switcher (Light/Dark/System), search bar, and microservice status monitor. | Python `http.server`, Tailwind CSS, HTML5 |
 | **DF AI Chatbot** | `dfchatbot/` | `5000` | **AI Robotics Assistant:** Multimodal RAG assistant for querying technical manuals (NavWiz, DFleet) with diagram/schematic visual search. | Python Flask, ChromaDB, Gemini 2.0/3.5, Waitress WSGI |
-| **Site Readiness App** | `site-readiness/` | `3000` | **AGV Site Assessment Tool (FRM-FLD-003):** Evaluates customer physical sites (flooring, Wi-Fi, ramps, clearances), captures 1 photo per section, tracks action items & exports official PDF reports. | Python Flask, ReportLab 5.0, Tailwind CSS, Waitress WSGI |
+| **Site Readiness App** | `site-readiness/` | `3000` | **AGV Site Assessment Tool (FRM-FLD-003):** Evaluates customer sites, remark-level evidence photos (max 1 per remark), handwritten signature canvas, and ReportLab PDF reports. | Python Flask, ReportLab 5.0, Tailwind CSS, Waitress WSGI |
 | **Preventive Maintenance** | `preventive-maintenance/` | `8000` | **Robot Maintenance & Audit Tool:** Dynamically discovers AGV families in `AGV_type/`, performs step-by-step SOP inspections, auto-fills form data, signs digitally, and exports official PDF/HTML reports matching source templates. | Python Flask, ReportLab 5.0, Tailwind CSS, Waitress WSGI |
 
 ---
@@ -34,21 +43,19 @@ DF_application/                     # Monorepo / Master workspace
 ├── .gitignore                      # Workspace-level gitignore (ignores data/, logs, pids)
 ├── README.md                       # User-facing onboarding & run instructions
 ├── PROJECT_CONTEXT.md              # Cross-session technical reference (This file)
+├── SESSION_REFERENCE.md            # Persistent cross-session developer rules
 ├── start_all.sh                    # Master startup script (Linux / macOS) with LAN IP banner
 ├── start_all.bat                   # Master startup script (Windows) with LAN IP banner
 ├── stop_all.sh                     # Master shutdown script (Linux / macOS)
 │
 ├── portal/                         # Submodule: Central Gateway (Port 8080)
-│   ├── index.html                  # Responsive dark-mode dashboard with live health checks
+│   ├── index.html                  # Google Material You dashboard with 3-way theme switcher
 │   └── server.py                   # Lightweight Python HTTP server binding 0.0.0.0
 │
 ├── dfchatbot/                      # Submodule: Multimodal RAG Chatbot (Port 5000)
 │   ├── .venv/                      # Isolated Python virtual environment
 │   ├── requirements.txt            # Python dependencies (ChromaDB, google-genai, waitress, etc.)
 │   ├── data/                       # Isolated runtime storage (.gitignored)
-│   │   ├── source_docs/            # Source technical PDF manuals
-│   │   ├── output/chroma_db/       # 688 embedded manual vector chunks
-│   │   └── user_storage/           # SQLite users_and_chats.db, profile pictures, uploads
 │   ├── src/                        # Core RAG engine, embedders, query pipelines, auth
 │   ├── scripts/run_server.py       # Production server launcher (Waitress WSGI)
 │   ├── templates/                  # Frontend UI (index.html, admin.html)
@@ -58,13 +65,13 @@ DF_application/                     # Monorepo / Master workspace
 │   ├── .venv/                      # Isolated Python virtual environment
 │   ├── requirements.txt            # Python dependencies (Flask, ReportLab, waitress)
 │   ├── app.py                      # Flask API & report management backend
-│   ├── report_generator.py         # Official FRM-FLD-003 ReportLab PDF engine
+│   ├── report_generator.py         # Official FRM-FLD-003 ReportLab PDF engine (signature & photos)
 │   ├── data/                       # Isolated runtime storage (.gitignored)
 │   │   ├── checklist_template.json # Canonical 8-section FRM-FLD-003 criteria
-│   │   ├── uploads/                # Section evidence photos
+│   │   ├── uploads/                # Remark evidence photos
 │   │   └── db.json                 # Audit records database
 │   ├── scripts/run_server.py       # Production server launcher (Waitress WSGI)
-│   └── templates/index.html        # Interactive site assessment UI with photo upload
+│   └── templates/index.html        # Interactive site assessment UI with signature & remark photos
 │
 └── preventive-maintenance/         # Submodule: Maintenance Checklist (Port 8000)
     ├── .venv/                      # Isolated Python virtual environment
@@ -72,38 +79,32 @@ DF_application/                     # Monorepo / Master workspace
     ├── app.py                      # Flask web application & dynamic SOP engine
     ├── report_generator.py         # Official Maintenance Form ReportLab PDF engine
     ├── AGV_type/                   # Dynamic AGV model family definitions
-    │   └── Zalpha/                 # Zalpha AGV series folder
-    │       ├── zalpha_v3_3_robot.json   # FRM/CS/015-V1.0 schema template
-    │       ├── auto_charger.json        # FRM/CS/004-V1.3 schema template
-    │       ├── hooking_payload.json     # FRM/CS/014-V1.0 schema template
-    │       └── towing_payload.json      # FRM/CS/013-V1.0 schema template
     ├── data/                       # Isolated runtime storage (.gitignored)
-    │   ├── uploads/                # Maintenance photo attachments
-    │   └── db.json                 # Saved inspection reports database
     ├── scripts/run_server.py       # Production server launcher (Waitress WSGI)
-    └── templates/
-        ├── index.html              # Step-by-step SOP maintenance wizard
-        └── report_print.html       # Printable HTML replica of official forms
+    └── templates/                  # Frontend SOP wizards
 ```
 
 ---
 
 ## 4. Key Architectural Standards & Rules
 
-### 1. Data Isolation Rule (`**/data/`)
+### 1. Scope Constraint Directive
+- **Do not add additional feature/button/text that did not mention in instruction.**
+
+### 2. Data Isolation Rule (`**/data/`)
 - Runtime data (SQLite databases, vector embeddings, uploaded photos, report JSONs) must strictly reside inside `data/` subdirectories.
 - All `data/` folders are ignored in `.gitignore`.
 - This guarantees that pulling updates from GitHub to deployment machines (or swapping branches) will **never** overwrite user databases or active audit logs.
 
-### 2. Dynamic AGV Discovery (`AGV_type/`)
+### 3. Dynamic AGV Discovery (`AGV_type/`)
 - In `preventive-maintenance`, the backend dynamically scans `AGV_type/` for any subdirectories.
 - Adding a new AGV model (e.g. `AGV_type/Titan/titan_v1.json`) automatically makes it available in the web UI dropdown without modifying python backend code.
 
-### 3. ReportLab PDF Generation
+### 4. ReportLab PDF Generation
 - Both `site-readiness` and `preventive-maintenance` contain standalone `report_generator.py` modules that construct pixel-accurate PDF documents using ReportLab.
 - Outputs match official DF Automation & Robotics corporate forms (`FRM-FLD-003`, `FRM/CS/015-V1.0`, etc.) with dual-column headers, rating tables, checkboxes, embedded photo evidence, and digital signature lines.
 
-### 4. Wi-Fi & LAN Network Routing
+### 5. Wi-Fi & LAN Network Routing
 - Servers bind to `0.0.0.0` to permit remote access across the local network.
 - Web UI links dynamically resolve `window.location.hostname` so mobile tablets or engineer laptops on the same Wi-Fi can navigate between apps without hardcoded `localhost` issues.
 
@@ -115,7 +116,6 @@ DF_application/                     # Monorepo / Master workspace
 - **Start All**: `./start_all.sh` (or `start_all.bat` on Windows)
   - Detects host machine's Wi-Fi / LAN IP address.
   - Launches each application using Waitress WSGI with multi-threaded worker pools.
-  - Unbuffered logging (`python -u`) output into `dfchatbot.log`, `site_readiness.log`, `pm.log`, `portal.log`.
   - Displays a shareable LAN link banner for remote devices.
 - **Stop All**: `./stop_all.sh`
   - Gracefully releases ports `8080`, `5000`, `3000`, and `8000`.
@@ -129,6 +129,3 @@ DF_application/                     # Monorepo / Master workspace
    - Make code edits inside the specific submodule.
    - Commit and push from within that submodule directory (`git commit -m "..." && git push origin main`).
    - Commit and push the updated submodule commit pointer in the root `DF_application` repository.
-3. **Cloning Workflow**:
-   - `git clone --recurse-submodules https://github.com/tolokedf/DF_application.git`
-   - Or initialize existing clone: `git submodule update --init --recursive`

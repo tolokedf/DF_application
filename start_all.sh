@@ -12,17 +12,17 @@ echo "======================================================================"
 
 # 1. Start Portal Hub (Port 8080)
 echo "[1/4] Starting Central Portal on http://localhost:8080 ..."
-nohup python3 -u "$PROJECT_ROOT/portal/server.py" > "$PROJECT_ROOT/portal.log" 2>&1 &
+setsid nohup python3 -u "$PROJECT_ROOT/portal/server.py" > "$PROJECT_ROOT/portal.log" 2>&1 &
 PORTAL_PID=$!
 
 # 2. Start DF Chatbot (Port 5000)
 echo "[2/4] Starting DF AI Chatbot on http://localhost:5000 ..."
 cd "$PROJECT_ROOT/dfchatbot"
 if [ -f ".venv/bin/python" ]; then
-    nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
+    setsid nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
     RAG_PID=$!
 else
-    nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
+    setsid nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
     RAG_PID=$!
 fi
 
@@ -30,10 +30,10 @@ fi
 echo "[3/4] Starting Site Readiness (Python) on http://localhost:3000 ..."
 cd "$PROJECT_ROOT/site-readiness"
 if [ -f ".venv/bin/python" ]; then
-    nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/site_readiness.log" 2>&1 &
+    setsid nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/site_readiness.log" 2>&1 &
     SITE_PID=$!
 else
-    nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/site_readiness.log" 2>&1 &
+    setsid nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/site_readiness.log" 2>&1 &
     SITE_PID=$!
 fi
 
@@ -41,10 +41,10 @@ fi
 echo "[4/4] Starting Preventive Maintenance on http://localhost:8000 ..."
 cd "$PROJECT_ROOT/preventive-maintenance"
 if [ -f ".venv/bin/python" ]; then
-    nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/pm.log" 2>&1 &
+    setsid nohup .venv/bin/python -u scripts/run_server.py > "$PROJECT_ROOT/pm.log" 2>&1 &
     PM_PID=$!
 else
-    nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/pm.log" 2>&1 &
+    setsid nohup python3 -u scripts/run_server.py > "$PROJECT_ROOT/pm.log" 2>&1 &
     PM_PID=$!
 fi
 
@@ -76,4 +76,5 @@ echo ""
 echo "To stop all services: ./stop_all.sh"
 echo "======================================================================"
 
+disown -a 2>/dev/null
 echo "$PORTAL_PID $RAG_PID $SITE_PID $PM_PID" > "$PROJECT_ROOT/.running_pids"
