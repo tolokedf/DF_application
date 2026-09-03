@@ -12,8 +12,8 @@ set ROOT_DIR=%~dp0
 :: 1. Start Portal (Port 8080)
 start "DF Portal (Port 8080)" cmd /k "cd /d %ROOT_DIR%portal && python server.py"
 
-:: 2. Start DF RAG Chatbot (Port 5000)
-start "DF Chatbot (Port 5000)" cmd /k "cd /d %ROOT_DIR%df_rag_project && call deploy\start_server.bat"
+:: 2. Start DF Chatbot (Port 5000)
+start "DF Chatbot (Port 5000)" cmd /k "cd /d %ROOT_DIR%dfchatbot && python scripts\run_server.py"
 
 :: 3. Start Site Readiness (Port 3000)
 start "Site Readiness (Port 3000)" cmd /k "cd /d %ROOT_DIR%site-readiness && python scripts\run_server.py"

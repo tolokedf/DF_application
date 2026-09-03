@@ -15,16 +15,16 @@ echo "[1/4] Starting Central Portal on http://localhost:8080 ..."
 python3 "$PROJECT_ROOT/portal/server.py" > "$PROJECT_ROOT/portal.log" 2>&1 &
 PORTAL_PID=$!
 
-# 2. Start DF RAG Project (Port 5000)
-echo "[2/4] Starting DF RAG Chatbot on http://localhost:5000 ..."
-cd "$PROJECT_ROOT/df_rag_project"
+# 2. Start DF Chatbot (Port 5000)
+echo "[2/4] Starting DF AI Chatbot on http://localhost:5000 ..."
+cd "$PROJECT_ROOT/dfchatbot"
 if [ -d ".venv" ]; then
     source .venv/bin/activate
-    python3 scripts/run_server.py > "$PROJECT_ROOT/df_rag.log" 2>&1 &
+    python3 scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
     RAG_PID=$!
     deactivate
 else
-    python3 scripts/run_server.py > "$PROJECT_ROOT/df_rag.log" 2>&1 &
+    python3 scripts/run_server.py > "$PROJECT_ROOT/dfchatbot.log" 2>&1 &
     RAG_PID=$!
 fi
 
@@ -44,15 +44,22 @@ fi
 # 4. Start Preventive Maintenance (Port 8000)
 echo "[4/4] Starting Preventive Maintenance on http://localhost:8000 ..."
 cd "$PROJECT_ROOT/preventive-maintenance"
-python3 app.py > "$PROJECT_ROOT/pm.log" 2>&1 &
-PM_PID=$!
+if [ -d ".venv" ]; then
+    source .venv/bin/activate
+    python3 app.py > "$PROJECT_ROOT/pm.log" 2>&1 &
+    PM_PID=$!
+    deactivate
+else
+    python3 app.py > "$PROJECT_ROOT/pm.log" 2>&1 &
+    PM_PID=$!
+fi
 
 cd "$PROJECT_ROOT"
 
 echo "======================================================================"
 echo "✅ All applications running with unified Python stack!"
 echo "📍 Central Portal Hub: http://localhost:8080"
-echo "   - 💬 AI Chatbot (df_rag_project):     http://localhost:5000"
+echo "   - 💬 AI Chatbot (dfchatbot):           http://localhost:5000"
 echo "   - 📋 Site Readiness (Python):          http://localhost:3000"
 echo "   - 🛠️ Preventive Maintenance:          http://localhost:8000"
 echo ""
