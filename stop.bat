@@ -1,4 +1,5 @@
 @echo off
+TITLE DF Application Suite - Stop All
 echo ======================================================================
 echo           🛑 Stopping all DF Application Suite services...
 echo ======================================================================

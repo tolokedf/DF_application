@@ -1,6 +1,7 @@
 @echo off
+TITLE DF Application Suite - Database Export
 echo ======================================================================
-echo           📥 DF Application Suite - Database Import Tool
+echo           📦 DF Application Suite - Database Export Tool
 echo ======================================================================
-python scripts\import_database.py %*
+python scripts\export_database.py %*
 pause

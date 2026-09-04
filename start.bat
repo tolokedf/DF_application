@@ -1,5 +1,5 @@
 @echo off
-TITLE DF Application Suite - Master Launcher (Unified Python)
+TITLE DF Application Suite - Master Launcher
 COLOR 0A
 
 echo =====================================================================
