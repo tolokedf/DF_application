@@ -17,9 +17,12 @@ if [ -f "$PROJECT_ROOT/.running_pids" ]; then
 fi
 
 # Also kill by ports if lingering
-fuser -k 8080/tcp 2>/dev/null
-fuser -k 5000/tcp 2>/dev/null
-fuser -k 3000/tcp 2>/dev/null
-fuser -k 8000/tcp 2>/dev/null
+for port in 8080 5000 3000 8000; do
+    if command -v fuser >/dev/null 2>&1; then
+        fuser -k ${port}/tcp 2>/dev/null
+    elif command -v lsof >/dev/null 2>&1; then
+        lsof -ti:${port} | xargs kill -9 2>/dev/null
+    fi
+done
 
 echo "✅ All services stopped."

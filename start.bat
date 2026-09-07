@@ -13,13 +13,13 @@ set ROOT_DIR=%~dp0
 start "DF Portal (Port 8080)" cmd /k "cd /d %ROOT_DIR%portal && python server.py"
 
 :: 2. Start DF Chatbot (Port 5000)
-start "DF Chatbot (Port 5000)" cmd /k "cd /d %ROOT_DIR%dfchatbot && python scripts\run_server.py"
+start "DF Chatbot (Port 5000)" cmd /k "cd /d %ROOT_DIR%dfchatbot && if exist .venv\Scripts\python.exe (.venv\Scripts\python.exe scripts\run_server.py) else (python scripts\run_server.py)"
 
 :: 3. Start Site Readiness (Port 3000)
-start "Site Readiness (Port 3000)" cmd /k "cd /d %ROOT_DIR%site-readiness && python scripts\run_server.py"
+start "Site Readiness (Port 3000)" cmd /k "cd /d %ROOT_DIR%site-readiness && if exist .venv\Scripts\python.exe (.venv\Scripts\python.exe scripts\run_server.py) else (python scripts\run_server.py)"
 
 :: 4. Start Preventive Maintenance (Port 8000)
-start "Preventive Maintenance (Port 8000)" cmd /k "cd /d %ROOT_DIR%preventive-maintenance && python scripts\run_server.py"
+start "Preventive Maintenance (Port 8000)" cmd /k "cd /d %ROOT_DIR%preventive-maintenance && if exist .venv\Scripts\python.exe (.venv\Scripts\python.exe scripts\run_server.py) else (python scripts\run_server.py)"
 
 echo.
 echo =====================================================================

@@ -20,11 +20,12 @@ def find_latest_zip() -> Path:
     zips = glob.glob(str(BASE_DIR / "DF_Database_*.zip"))
     zips += glob.glob(str(DB_DIR / "backups" / "DF_Database_*.zip"))
     zips += glob.glob(str(BASE_DIR / "*.zip"))
-    if not zips:
+    unique_zips = list(set(zips))
+    if not unique_zips:
         return None
     # Sort by modification time
-    zips.sort(key=lambda p: os.path.getmtime(p), reverse=True)
-    return Path(zips[0])
+    unique_zips.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+    return Path(unique_zips[0])
 
 def import_database(zip_source_path: str = None):
     if zip_source_path:
