@@ -16,16 +16,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DB_DIR = BASE_DIR / "Database"
 
 def find_latest_zip() -> Path:
-    # Check current directory and Database/backups
+    # Check current directory and Database/backups for DF_Database export archives
     zips = glob.glob(str(BASE_DIR / "DF_Database_*.zip"))
     zips += glob.glob(str(DB_DIR / "backups" / "DF_Database_*.zip"))
-    zips += glob.glob(str(BASE_DIR / "*.zip"))
-    unique_zips = list(set(zips))
-    if not unique_zips:
-        return None
-    # Sort by modification time
-    unique_zips.sort(key=lambda p: os.path.getmtime(p), reverse=True)
-    return Path(unique_zips[0])
+    df_zips = [z for z in set(zips) if not Path(z).name.startswith("pre_import_safety_backup")]
+    if df_zips:
+        df_zips.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+        return Path(df_zips[0])
+
+    # Fallback: other archives in BASE_DIR excluding safety backups
+    fallback_zips = [z for z in glob.glob(str(BASE_DIR / "*.zip")) if not Path(z).name.startswith("pre_import_safety_backup")]
+    if fallback_zips:
+        fallback_zips.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+        return Path(fallback_zips[0])
+    return None
 
 def import_database(zip_source_path: str = None):
     if zip_source_path:
